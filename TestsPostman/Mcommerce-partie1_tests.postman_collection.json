@@ -1,0 +1,115 @@
+{
+	"variables": [],
+	"info": {
+		"name": "Mcommerce-partie1_tests",
+		"_postman_id": "eb7b3f5e-d10a-21fd-705a-66ec28f671f3",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get products",
+			"request": {
+				"url": "http://localhost:9090/Produits",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get products by id",
+			"request": {
+				"url": "http://localhost:9090/Produits/1",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get products by id Error - unexisting id",
+			"request": {
+				"url": "http://localhost:9090/Produits/40",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Create a product",
+			"request": {
+				"url": "http://localhost:9090/Produits",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": 4,\n    \"nom\": \"7 boules de cristal\",\n    \"prix\": 3500\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Create a product Error - prix = 0",
+			"request": {
+				"url": "http://localhost:9090/Produits",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": 4,\n    \"nom\": \"7 boules de cristal\",\n    \"prix\": 0\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Modify product",
+			"request": {
+				"url": "http://localhost:9090/Produits",
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": 1,\n    \"nom\": \"PC portable\",\n    \"prix\": 360\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Delete product",
+			"request": {
+				"url": "http://localhost:9090/Produits/3",
+				"method": "DELETE",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}

@@ -2,7 +2,11 @@ package com.ecommerce.microcommerce.web.controller;
 
 import com.ecommerce.microcommerce.dao.ProductDao;
 import com.ecommerce.microcommerce.model.Product;
+import com.ecommerce.microcommerce.web.exceptions.ProduitGratuitException;
 import com.ecommerce.microcommerce.web.exceptions.ProduitIntrouvableException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.ser.FilterProvider;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
@@ -16,6 +20,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -62,8 +67,6 @@ public class ProductController {
     }
 
 
-
-
     //ajouter un produit
     @PostMapping(value = "/Produits")
 
@@ -73,6 +76,10 @@ public class ProductController {
 
         if (productAdded == null)
             return ResponseEntity.noContent().build();
+
+        if(productAdded.getPrix() == 0){
+            throw new ProduitGratuitException("Le prix de vente doit être supérieur à 0 !");
+        }
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -101,6 +108,42 @@ public class ProductController {
     public List<Product>  testeDeRequetes(@PathVariable int prix) {
 
         return productDao.chercherUnProduitCher(400);
+    }
+
+
+
+    //**************************************************************
+    // ********************  Exercices  ****************************
+    // **************************************************************
+
+    //------------- PARTIE 1 ---------------------------------------
+    // Méthode qui va calculer la marge et l'afficher
+    @GetMapping(value = "/AdminProduits")
+    public ObjectNode calculerMargeProduit(){
+
+        //On récupère les produits dans la bdd
+        Iterable<Product> produits = productDao.findAll();
+
+        //On créer un object mapper pour pouvoir les afficher comme un JSON
+        ObjectMapper mapper = new ObjectMapper();
+        ObjectNode objectNode1 = mapper.createObjectNode();
+
+        //On calcul la marge pour chaque produit et on le met dans notre map
+        for(Product product : produits){
+            int marge = product.getPrix() - product.getPrixAchat();
+            objectNode1.put(product.toString(), marge);
+        }
+
+        return objectNode1;
+    }
+
+
+
+    //------------- PARTIE 2 ---------------------------------------
+    // Méthode qui va trier les produits par ordre alphabétique
+    @GetMapping(value = "Produits/triAlphabetique")
+    public List<Product> trierProduitsParOrdreAlphabetique(){
+        return productDao.OrderByNom();
     }
 
 
